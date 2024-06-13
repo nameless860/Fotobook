@@ -1,0 +1,29 @@
+name: Test Build and Deploy Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build step
+      run: echo "Build step completed successfully"
+
+  deploy:
+    environment: testing
+    runs-on: ubuntu-20.04
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy step
+      run: echo "Deploy step completed successfully"
