@@ -6,16 +6,6 @@ on:
       - master
 
 jobs:
-  build:
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build step
-        run: echo "Build step completed successfully"
-
   deploy:
     environment: testing
     runs-on: ubuntu-20.04
@@ -25,29 +15,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install OpenVPN
-        run: |
-          sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
+      # - name: Install OpenVPN
+      #   run: |
+      #     sudo apt update
+      #     sudo apt install -y openvpn openvpn-systemd-resolved
 
-      - name: Connect to VPN
-        uses: "kota65535/github-openvpn-connect-action@v2"
-        with:
-          config_file: .github/vpn/client.ovpn
-          username: ${{ secrets.OVPN_USERNAME }}
-          password: ${{ secrets.OVPN_PASSWORD }}
-          client_key: ${{ secrets.OVPN_USER_KEY }}
-          tls_auth_key: ${{ secrets.OVPN_TLS_AUTH_KEY }}
+      # - name: Connect to VPN
+      #   uses: "kota65535/github-openvpn-connect-action@v2"
+      #   with:
+      #     config_file: .github/vpn/client.ovpn
+      #     username: ${{ secrets.OVPN_USERNAME }}
+      #     password: ${{ secrets.OVPN_PASSWORD }}
+      #     client_key: ${{ secrets.OVPN_USER_KEY }}
+      #     tls_auth_key: ${{ secrets.OVPN_TLS_AUTH_KEY }}
 
       - name: SSH to EC2 and Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.EC2_SSH_HOST }}
-          username: ${{ secrets.EC2_SSH_USER }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          host: ${{ secrets.RAILS_4_SSH_HOST }}
+          username: ${{ secrets.RAILS_4_SSH_USER }}
+          key: ${{ secrets.RAILS_4_SSH_PRIVATE_KEY }}
           script: |
-            cd ~/ken_test/am-rails/
-            DEPLOY_BRANCH='staging_rails_6' cap staging deploy
+            whoami
+            ls -al
+
+
+      # - name: SSH to EC2 and Deploy
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.EC2_SSH_HOST }}
+      #     username: ${{ secrets.EC2_SSH_USER }}
+      #     key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+      #     script: |
+      #       cd ~/ken_test/am-rails/
+      #       DEPLOY_BRANCH='staging_rails_6' cap staging deploy
 
       - name: SSH successfully
         run: echo "Deploy step completed successfully"
