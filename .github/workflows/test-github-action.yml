@@ -9,7 +9,6 @@ jobs:
   deploy:
     environment: testing
     runs-on: ubuntu-20.04
-    needs: build
 
     steps:
       - name: Checkout code
