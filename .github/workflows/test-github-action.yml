@@ -28,15 +28,15 @@ jobs:
         run: |
           sudo openvpn3 session-start --config client.ovpn
 
-      # - name: SSH to EC2 and Deploy
-      #   uses: appleboy/ssh-action@v1.0.3
-      #   with:
-      #     host: ${{ secrets.RAILS_4_SSH_HOST }}
-      #     username: ${{ secrets.RAILS_4_SSH_USER }}
-      #     key: ${{ secrets.RAILS_4_SSH_PRIVATE_KEY }}
-      #     script: |
-      #       whoami
-      #       ls -al
+      - name: SSH to EC2 and Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RAILS_4_SSH_HOST }}
+          username: ${{ secrets.RAILS_4_SSH_USER }}
+          key: ${{ secrets.RAILS_4_SSH_PRIVATE_KEY }}
+          script: |
+            whoami
+            ls -al
 
-      # - name: SSH successfully
-      #   run: echo "Deploy step completed successfully"
+      - name: SSH successfully
+        run: echo "Deploy step completed successfully"
