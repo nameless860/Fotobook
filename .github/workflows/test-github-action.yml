@@ -12,11 +12,12 @@ jobs:
 
     steps:
       - name: Start Open VPN 3
-      - uses: dbritto-dev/openvpn3-action@main
+        uses: dbritto-dev/openvpn3-action@main
         with:
           vpn-client-config: ${{ secrets.VPN_CLIENT_CONFIG }}
           script: |
             sudo openvpn3 sessions-list
+
 
       # - name: SSH to EC2 and Deploy
       #   uses: appleboy/ssh-action@v1.0.3
