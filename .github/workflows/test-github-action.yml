@@ -11,18 +11,22 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: SSH to EC2 and Deploy
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Start Open VPN 3
+      - uses: dbritto-dev/openvpn3-action@main
         with:
-          host: ${{ secrets.RAILS_4_SSH_HOST }}
-          username: ${{ secrets.RAILS_4_SSH_USER }}
-          key: ${{ secrets.RAILS_4_SSH_PRIVATE_KEY }}
+          vpn-client-config: ${{ secrets.VPN_CLIENT_CONFIG }}
           script: |
-            whoami
-            ls -al
+            sudo openvpn3 sessions-list
 
-      - name: SSH successfully
-        run: echo "Deploy step completed successfully"
+      # - name: SSH to EC2 and Deploy
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.RAILS_4_SSH_HOST }}
+      #     username: ${{ secrets.RAILS_4_SSH_USER }}
+      #     key: ${{ secrets.RAILS_4_SSH_PRIVATE_KEY }}
+      #     script: |
+      #       whoami
+      #       ls -al
+
+      # - name: SSH successfully
+      #   run: echo "Deploy step completed successfully"
