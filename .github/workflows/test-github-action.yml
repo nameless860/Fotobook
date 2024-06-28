@@ -11,13 +11,19 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Start Open VPN 3
-        uses: dbritto-dev/openvpn3-action@main
-        with:
-          vpn-client-config: ${{ secrets.VPN_CLIENT_CONFIG }}
-          script: |
-            sudo openvpn3 sessions-list
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openvpn3
 
+      - name: Configure OpenVPN
+        run: |
+          echo "${{ secrets.VPN_CLIENT_CONFIG }}" > client.ovpn
+          sudo openvpn3 config-import --config client.ovpn
+
+      - name: Start Open VPN 3
+        run: |
+          sudo openvpn3 session-start --config client.ovpn
 
       # - name: SSH to EC2 and Deploy
       #   uses: appleboy/ssh-action@v1.0.3
